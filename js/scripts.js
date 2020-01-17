@@ -149,11 +149,10 @@ document.getElementById('search-submit').addEventListener('click', function(even
     event.preventDefault();
     const searchInput = document.getElementById('search-input');
     const searchList = [];
-    console.log('hi');
     for (let i = 0; i < employeeInfo.length; i++) {
         if (searchInput.value.length === 0) {
             document.querySelectorAll('.card')[i].style.display = '';
-        } else if (employeeInfo[i].firstName.toLowerCase().includes(searchInput.value.toLowerCase()) || employeeInfo[i].LastName.toLowerCase().includes(searchInput.value.toLowerCase())) {
+        } else if (employeeInfo[i].firstName.toLowerCase().includes(searchInput.value.toLowerCase()) || employeeInfo[i].lastName.toLowerCase().includes(searchInput.value.toLowerCase())) {
             document.querySelectorAll('.card')[i].style.display = '';
         } else {
             document.querySelectorAll('.card')[i].style.display = 'none';
