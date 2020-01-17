@@ -1,16 +1,18 @@
+//Declare all global variables
 const body = document.querySelector('body');
 const searchDiv = document.querySelector('.search-container');
 const gallery = document.getElementById('gallery');
 const employeeInfo = []; 
 
+//function to fetch API with url
 function fetchData(url) {
     return fetch(url)
             .then(checkStatus)
             .then(res => res.json())
-            //.then(data => console.log(data))
             .catch(error => console.log('Looks like there was a problem', error))
 }
 
+//checks if promise is resolved
 function checkStatus(response) {
     if(response.ok) {
       return Promise.resolve(response);
@@ -19,6 +21,7 @@ function checkStatus(response) {
     }
 }
 
+//creates and appends a new div
 function createDiv(parent, clas) {
     const div = document.createElement('div');
     div.classList.add(clas);
@@ -26,6 +29,7 @@ function createDiv(parent, clas) {
     return div;
 }
 
+//generates all employee divs and adds info
 function generateEmployees(data) {
     const card = createDiv(gallery, 'card');
     
@@ -40,6 +44,7 @@ function generateEmployees(data) {
     })
 }
 
+//creates a modal as with close, next, and previous buttons
 function createModal(data) {
     const index = data.index;
     const container = createDiv(body, 'modal-container');
@@ -66,6 +71,7 @@ function createModal(data) {
     const prev = document.getElementById('modal-prev');
     const next = document.getElementById('modal-next');
 
+    //eventListeners for the buttons
     document.getElementById("modal-close-btn").addEventListener('click', function(event) {
         body.removeChild(container);
     });
@@ -87,11 +93,13 @@ function createModal(data) {
     });
 }
 
+// returns image html
 function generateImage(data) {
     const html = `<img class="card-img" src='${data.img}' alt="profile picture">`;
     return html;
 }
 
+//returns basic employee info in html
 function generateName(data) {
     const html = `
         <h3 id="name" class="card-name cap">${data.firstName} ${data.lastName}</h3>
@@ -101,6 +109,7 @@ function generateName(data) {
     return html;
 }
 
+//create and append search bar form
 const form = document.createElement("FORM");
 document.getElementsByTagName('FORM').action = "#";
 document.getElementsByTagName('FORM').method = "get";
@@ -110,6 +119,7 @@ form.innerHTML = `
     `
 searchDiv.appendChild(form);
 
+//creates 12 employee div cards and puts info in an array of employee objects
 for (let i = 0; i < 12; i++) {
     fetchData('https://randomuser.me/api/')
         .then(data => {
@@ -134,6 +144,7 @@ for (let i = 0; i < 12; i++) {
         })
 }
 
+//searches and matches search input with employee names
 document.getElementById('search-submit').addEventListener('click', function(event) {
     event.preventDefault();
     const searchInput = document.getElementById('search-input');
@@ -142,7 +153,7 @@ document.getElementById('search-submit').addEventListener('click', function(even
     for (let i = 0; i < employeeInfo.length; i++) {
         if (searchInput.value.length === 0) {
             document.querySelectorAll('.card')[i].style.display = '';
-        } else if (employeeInfo[i].firstName.toLowerCase().includes(searchInput.value.toLowerCase())) {
+        } else if (employeeInfo[i].firstName.toLowerCase().includes(searchInput.value.toLowerCase()) || employeeInfo[i].LastName.toLowerCase().includes(searchInput.value.toLowerCase())) {
             document.querySelectorAll('.card')[i].style.display = '';
         } else {
             document.querySelectorAll('.card')[i].style.display = 'none';
